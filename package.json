@@ -1,0 +1,37 @@
+{
+  "name": "eventually-podcast",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=dev npm run start",
+    "stage": "NODE_ENV=stage npm run start",
+    "prod": "NODE_ENV=prod npm run start",
+    "start": "node index.js",
+    "test": "PORT=3001 jest ./test/* --forceExit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ansi-regex": "^6.0.1",
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jest-junit-reporter": "^1.1.0",
+    "morgan": "^1.10.0",
+    "os": "^0.1.2",
+    "path": "^0.12.7",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "index": "^0.4.0",
+    "jest": "^27.1.2",
+    "jest-html-reporter": "^3.5.0",
+    "supertest": "^6.2.4"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "testResultsProcessor": "./node_modules/jest-junit-reporter"
+  }
+}

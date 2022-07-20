@@ -1,0 +1,54 @@
+name: NodeJS Checks and PR validation
+
+on:
+  pull_request:
+    branches: [ "master", "staging", "develop"]
+
+jobs:
+
+  njsscan:
+    runs-on: ubuntu-latest
+    name: njsscan check
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    - name: nodejsscan scan
+      id: njsscan
+      uses: ajinabraham/njsscan-action@master
+      with:
+        args: '. --sarif --output results.sarif || true'
+    - name: Upload njsscan report
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: results.sarif
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [njsscan]
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: npm install
+      run: | 
+        npm i
+
+    - name: test
+      run: |
+        npm run test
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success()
+      with:
+        name: Node Express Tests
+        path: test-*.xml
+        reporter: jest-junit 
