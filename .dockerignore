@@ -1,0 +1,22 @@
+# Versioning and metadata
+.git
+.*ignore
+.husky
+.vscode
+*.md
+
+# Build dependencies
+dist
+node_modules
+
+# Environment (contains sensitive data)
+.env.*
+
+# Files not required for production
+.editorconfig
+
+# Others
+docker
+az
+*.xml
+.github

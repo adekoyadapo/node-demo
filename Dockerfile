@@ -9,11 +9,11 @@ COPY --chown=node:node package*.json ./
 USER node
 RUN npm i
 
-FROM base as prod
+FROM base as ${NODE_ENV}
 WORKDIR /usr/src/app
 USER node
-ENV NODE_ENV=prod
+ENV NODE_ENV=${NODE_ENV}
 COPY --chown=node:node --from=base /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node ["./*.js", "package*.json", "prod.env", "./"]
-EXPOSE 8080
-CMD ["npm", "run", "prod"]
+COPY --chown=node:node ["./*.js", "package*.json", ".env", "./"]
+EXPOSE ${PORT}
+CMD ["npm", "run", "${NODE_ENV}"]
