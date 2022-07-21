@@ -1,8 +1,8 @@
-name: NodeJS Checks and PR validation
+name: NodeJS Docker build
 
 on:
   push:
-    branches: [ "master", "stage", "dev"]
+    branches: [ "master"]
 
 jobs:
   docker-build:
@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        stage: [ {env: dev, port: 3000}, {env: stage, port: 3010}, {env: prod, port: 8000} ]
+        stage: [ {env: dev, port: 3000}, {env: stage, port: 3010}, {env: prod, port: 8080} ]
     env:
       NODE_ENV: ${{ matrix.stage.env }}
       PORT: ${{ matrix.stage.port }}
@@ -42,9 +42,8 @@ jobs:
             org.opencontainers.image.description=Nodejs Demo
             org.opencontainers.image.vendor=360ace
           tags: |
-            type=ref,event=branch
             type=raw,value=v1.0.0-${{ matrix.stage.env }}
-            type=sha
+            type=sha,enable=true,priority=100,prefix=,suffix=,format=short
 
       - name: Replace Env Values
         uses: franzbischoff/replace_envs@v1
@@ -73,8 +72,6 @@ jobs:
           context: .
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: false
-          # push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          # tags: aade/node:v1.0.0-${{ matrix.stage.env }}
           labels: ${{ steps.meta.outputs.labels }}
