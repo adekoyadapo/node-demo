@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 
 app.get("/", function (req, res) {
- return res.send(hostname + '<br/>' + 'version: ' + config.APP_VERSION );
+ return res.send(hostname + '<br/>' + 'version: ' + config.APP_VERSION + '<br/>' + 'Application Port: ' + config.PORT);
 });
 
 // listen to port 3000 by default
