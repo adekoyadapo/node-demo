@@ -33,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         env:
-          VERSION: v1.0.0-${{ matrix.stage.env }}
+          VERSION: v1.0.1-${{ matrix.stage.env }}
         with:
           images: aade/node
           labels: |
@@ -42,13 +42,13 @@ jobs:
             org.opencontainers.image.description=Nodejs Demo
             org.opencontainers.image.vendor=360ace
           tags: |
-            type=raw,value=v1.0.0-${{ matrix.stage.env }}
+            type=raw,value=v1.0.1-${{ matrix.stage.env }}
             type=sha,enable=true,priority=100,prefix=,suffix=,format=short
 
       - name: Replace Env Values
         uses: franzbischoff/replace_envs@v1
         env:
-          VERSION: v1.0.0-${{ matrix.stage.env }}
+          VERSION: v1.0.1-${{ matrix.stage.env }}
           PORT: ${{ matrix.stage.port }}
           NODE_ENV: ${{ matrix.stage.env }}
         with:
