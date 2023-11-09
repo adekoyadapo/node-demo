@@ -1,8 +1,10 @@
 name: NodeJS Checks and PR validation
-
 on:
+  push:
+    branches: [ master, main ]
+
   pull_request:
-    branches: [ "master", "staging", "develop"]
+    branches: [ master, main]
 
 jobs:
 
@@ -18,12 +20,13 @@ jobs:
       with:
         args: '. --sarif --output results.sarif || true'
     - name: Upload njsscan report
-      uses: github/codeql-action/upload-sarif@v1
+      uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: results.sarif
 
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     needs: [njsscan]
     strategy:
       matrix:
@@ -45,10 +48,10 @@ jobs:
       run: |
         npm run test
 
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success()
-      with:
-        name: Node Express Tests
-        path: test-*.xml
-        reporter: jest-junit 
+    # - name: Test Report
+    #   uses: dorny/test-reporter@v1
+    #   if: success()
+    #   with:
+    #     name: Node Express Tests
+    #     path: test-*.xml
+    #     reporter: jest-junit 
