@@ -2,7 +2,7 @@ name: NodeJS Checks and PR validation
 
 on:
   pull_request:
-    branches: [ "master", "staging", "develop"]
+    branches: [ "master", "dev"]
 
 jobs:
 
